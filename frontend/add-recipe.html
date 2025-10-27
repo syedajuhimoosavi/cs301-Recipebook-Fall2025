@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Recipe</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Add New Recipe</h1>
+            <button class="btn-secondary" onclick="window.location.href='index.html'">Back to Recipes</button>
+        </header>
+
+        <form id="recipeForm" class="recipe-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="title">Recipe Title *</label>
+                <input type="text" id="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Short Description *</label>
+                <textarea id="description" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Recipe Image</label>
+                <input type="file" id="image" accept="image/*">
+                <small style="color: #9b9b9b; display: block; margin-top: 5px;">
+                    Supported formats: JPG, PNG, GIF (Max 5MB)
+                </small>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="protein">Protein (g) *</label>
+                    <input type="number" id="protein" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="carbs">Carbs (g) *</label>
+                    <input type="number" id="carbs" step="0.1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cook_time">Cook Time (minutes) *</label>
+                    <input type="number" id="cook_time" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="difficulty">Difficulty *</label>
+                    <select id="difficulty" required>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="is_vegan"> Vegan
+                    </label>
+                    <label>
+                        <input type="checkbox" id="is_vegetarian"> Vegetarian
+                    </label>
+                    <label>
+                        <input type="checkbox" id="is_gluten_free"> Gluten-Free
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ingredients">Ingredients *</label>
+                <textarea id="ingredients" rows="5" placeholder="List all ingredients, separated by commas" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">Instructions *</label>
+                <textarea id="instructions" rows="8" placeholder="Step-by-step cooking instructions" required></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Save Recipe</button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='index.html'">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

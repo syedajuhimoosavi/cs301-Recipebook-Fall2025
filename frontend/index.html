@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recipe Manager</h1>
+            <button class="btn-primary" onclick="window.location.href='add-recipe.html'">Add New Recipe</button>
+        </header>
+
+        <div class="filters-section">
+            <h2>Filter Recipes</h2>
+
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label>Min Protein (g):</label>
+                    <input type="number" id="minProtein" placeholder="0">
+                </div>
+                <div class="filter-item">
+                    <label>Max Protein (g):</label>
+                    <input type="number" id="maxProtein" placeholder="100">
+                </div>
+                <div class="filter-item">
+                    <label>Min Carbs (g):</label>
+                    <input type="number" id="minCarbs" placeholder="0">
+                </div>
+                <div class="filter-item">
+                    <label>Max Carbs (g):</label>
+                    <input type="number" id="maxCarbs" placeholder="100">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox" id="vegan"> Vegan Only
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox" id="vegetarian"> Vegetarian Only
+                    </label>
+                </div>
+                <div class="filter-item">
+                    <label>
+                        <input type="checkbox" id="glutenFree"> Gluten-Free Only
+                    </label>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label>Sort By:</label>
+                    <select id="sortBy">
+                        <option value="">None</option>
+                        <option value="cook_time">Cook Time</option>
+                        <option value="difficulty">Difficulty</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label>Order:</label>
+                    <select id="sortOrder">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-actions">
+                <button class="btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button class="btn-secondary" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+
+        <div class="recipes-section">
+            <h2>All Recipes</h2>
+            <div id="recipesContainer" class="recipes-grid">
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

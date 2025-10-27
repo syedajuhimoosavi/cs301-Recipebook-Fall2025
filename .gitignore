@@ -1,0 +1,72 @@
+# C++ Build Files
+*.o
+*.obj
+*.exe
+*.out
+recipe_server
+
+# Database
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Uploaded Images
+uploads/*
+!uploads/.gitkeep
+
+# Compiled Static Libraries
+*.a
+*.lib
+
+# Compiled Dynamic Libraries
+*.so
+*.dylib
+*.dll
+
+docs/*
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-*
+*.kate-swp
+
+# Logs
+*.log
+*.tmp
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Node modules (if any frontend tools)
+node_modules/
+
+# Python cache (if any scripts)
+__pycache__/
+*.pyc
+*.pyo
+
+
+# Temporary files
+tmp/
+temp/
