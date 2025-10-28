@@ -5,68 +5,177 @@
 #include <sstream>
 #include <fstream>
 #include <ctime>
+#include <iomanip>
 
-std::string recipeToJson(const Recipe& recipe) {
+// Utility function to correctly escape strings for JSON format
+std::string jsonEscape(const std::string &s)
+{
+    std::string escaped = "";
+    for (char c : s)
+    {
+        switch (c)
+        {
+        case '"':
+            escaped += "\\\"";
+            break; // Escape double quotes
+        case '\\':
+            escaped += "\\\\";
+            break; // Escape backslashes
+        case '\b':
+            escaped += "\\b";
+            break; // Escape backspace
+        case '\f':
+            escaped += "\\f";
+            break; // Escape form feed
+        case '\n':
+            escaped += "\\n";
+            break; // ESCAPE THE NEWLINE CHARACTER (THIS FIXES YOUR ERROR)
+        case '\r':
+            escaped += "\\r";
+            break; // Escape carriage return
+        case '\t':
+            escaped += "\\t";
+            break; // Escape tab
+        default:
+            // Only for completeness: handle control characters < 32 (non-printable)
+            if (c >= 0 && c < 32)
+            {
+                std::stringstream ss;
+                ss << "\\u" << std::hex << std::setw(4) << std::setfill('0') << (int)c;
+                escaped += ss.str();
+            }
+            else
+            {
+                escaped += c;
+            }
+            break;
+        }
+    }
+    return escaped;
+}
+
+std::string recipeToJson(const Recipe &recipe)
+{
     std::stringstream ss;
     ss << "{";
     ss << "\"id\":" << recipe.id << ",";
-    ss << "\"title\":\"" << recipe.title << "\",";
-    ss << "\"description\":\"" << recipe.description << "\",";
-    ss << "\"image_url\":\"" << recipe.image_url << "\",";
+    ss << "\"title\":\"" << jsonEscape(recipe.title) << "\",";             // Applied escaping
+    ss << "\"description\":\"" << jsonEscape(recipe.description) << "\","; // Applied escaping
+    ss << "\"image_url\":\"" << jsonEscape(recipe.image_url) << "\",";     // Applied escaping
     ss << "\"protein\":" << recipe.protein << ",";
     ss << "\"carbs\":" << recipe.carbs << ",";
     ss << "\"is_vegan\":" << (recipe.is_vegan ? "true" : "false") << ",";
     ss << "\"is_vegetarian\":" << (recipe.is_vegetarian ? "true" : "false") << ",";
     ss << "\"is_gluten_free\":" << (recipe.is_gluten_free ? "true" : "false") << ",";
     ss << "\"cook_time\":" << recipe.cook_time << ",";
-    ss << "\"difficulty\":\"" << recipe.difficulty << "\",";
-    ss << "\"ingredients\":\"" << recipe.ingredients << "\",";
-    ss << "\"instructions\":\"" << recipe.instructions << "\",";
-    ss << "\"created_at\":\"" << recipe.created_at << "\"";
+    ss << "\"difficulty\":\"" << jsonEscape(recipe.difficulty) << "\",";     // Applied escaping
+    ss << "\"ingredients\":\"" << jsonEscape(recipe.ingredients) << "\",";   // Applied escaping
+    ss << "\"instructions\":\"" << jsonEscape(recipe.instructions) << "\","; // Applied escaping
+    ss << "\"created_at\":\"" << jsonEscape(recipe.created_at) << "\"";      // Applied escaping
     ss << "}";
     return ss.str();
 }
 
-std::string recipesToJson(const std::vector<Recipe>& recipes) {
+std::string recipesToJson(const std::vector<Recipe> &recipes)
+{
     std::stringstream ss;
     ss << "[";
-    for (size_t i = 0; i < recipes.size(); ++i) {
+    for (size_t i = 0; i < recipes.size(); ++i)
+    {
         ss << recipeToJson(recipes[i]);
-        if (i < recipes.size() - 1) ss << ",";
+        if (i < recipes.size() - 1)
+            ss << ",";
     }
     ss << "]";
     return ss.str();
 }
 
-std::string getQueryParam(const httplib::Request& req, const std::string& key, const std::string& defaultValue = "") {
-    if (req.has_param(key)) {
+std::string getQueryParam(const httplib::Request &req, const std::string &key, const std::string &defaultValue = "")
+{
+    if (req.has_param(key))
+    {
         return req.get_param_value(key);
     }
     return defaultValue;
 }
 
-double getQueryParamDouble(const httplib::Request& req, const std::string& key, double defaultValue = -1.0) {
-    if (req.has_param(key)) {
-        try {
+double getQueryParamDouble(const httplib::Request &req, const std::string &key, double defaultValue = -1.0)
+{
+    if (req.has_param(key))
+    {
+        try
+        {
             return std::stod(req.get_param_value(key));
-        } catch (...) {
+        }
+        catch (...)
+        {
             return defaultValue;
         }
     }
     return defaultValue;
 }
 
-bool getQueryParamBool(const httplib::Request& req, const std::string& key) {
-    if (req.has_param(key)) {
+bool getQueryParamBool(const httplib::Request &req, const std::string &key)
+{
+    if (req.has_param(key))
+    {
         std::string value = req.get_param_value(key);
         return value == "true" || value == "1";
     }
     return false;
 }
 
-int main() {
+// // Add this helper function somewhere in main.cpp, perhaps before recipeToJson
+// std::string jsonEscape(const std::string &s)
+// {
+//     std::string escaped = "";
+//     for (char c : s)
+//     {
+//         switch (c)
+//         {
+//         case '"':
+//             escaped += "\\\"";
+//             break;
+//         case '\\':
+//             escaped += "\\\\";
+//             break;
+//         case '\b':
+//             escaped += "\\b";
+//             break;
+//         case '\f':
+//             escaped += "\\f";
+//             break;
+//         case '\n':
+//             escaped += "\\n";
+//             break;
+//         case '\r':
+//             escaped += "\\r";
+//             break;
+//         case '\t':
+//             escaped += "\\t";
+//             break;
+//         default:
+//             if (c < 32 || c > 126)
+//             { // Handle other control characters (optional but good practice)
+//                 std::stringstream ss;
+//                 ss << "\\u" << std::hex << std::setw(4) << std::setfill('0') << (int)c;
+//                 escaped += ss.str();
+//             }
+//             else
+//             {
+//                 escaped += c;
+//             }
+//             break;
+//         }
+//     }
+//     return escaped;
+// }
+
+int main()
+{
     Database db("recipes.db");
-    if (!db.initialize()) {
+    if (!db.initialize())
+    {
         std::cerr << "Failed to initialize database" << std::endl;
         return 1;
     }
@@ -76,7 +185,8 @@ int main() {
     svr.set_mount_point("/", "../frontend");
     svr.set_mount_point("/uploads", "../uploads");
 
-    svr.Get("/api/recipes", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Get("/api/recipes", [&](const httplib::Request &req, httplib::Response &res)
+            {
         std::vector<Recipe> recipes;
 
         bool hasFilters = req.has_param("minProtein") || req.has_param("maxProtein") ||
@@ -106,10 +216,10 @@ int main() {
         }
 
         res.set_header("Access-Control-Allow-Origin", "*");
-        res.set_content(recipesToJson(recipes), "application/json");
-    });
+        res.set_content(recipesToJson(recipes), "application/json"); });
 
-    svr.Get("/api/recipes/:id", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Get("/api/recipes/:id", [&](const httplib::Request &req, httplib::Response &res)
+            {
         int id = std::stoi(req.path_params.at("id"));
         Recipe recipe = db.getRecipeById(id);
 
@@ -120,10 +230,10 @@ int main() {
             res.set_content("{\"error\":\"Recipe not found\"}", "application/json");
         } else {
             res.set_content(recipeToJson(recipe), "application/json");
-        }
-    });
+        } });
 
-    svr.Post("/api/recipes", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Post("/api/recipes", [&](const httplib::Request &req, httplib::Response &res)
+             {
         res.set_header("Access-Control-Allow-Origin", "*");
 
         Recipe recipe;
@@ -160,10 +270,10 @@ int main() {
         } else {
             res.status = 500;
             res.set_content("{\"error\":\"Failed to create recipe\"}", "application/json");
-        }
-    });
+        } });
 
-    svr.Put("/api/recipes/:id", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Put("/api/recipes/:id", [&](const httplib::Request &req, httplib::Response &res)
+            {
         res.set_header("Access-Control-Allow-Origin", "*");
 
         int id = std::stoi(req.path_params.at("id"));
@@ -202,10 +312,10 @@ int main() {
         } else {
             res.status = 500;
             res.set_content("{\"error\":\"Failed to update recipe\"}", "application/json");
-        }
-    });
+        } });
 
-    svr.Delete("/api/recipes/:id", [&](const httplib::Request& req, httplib::Response& res) {
+    svr.Delete("/api/recipes/:id", [&](const httplib::Request &req, httplib::Response &res)
+               {
         res.set_header("Access-Control-Allow-Origin", "*");
 
         int id = std::stoi(req.path_params.at("id"));
@@ -215,20 +325,19 @@ int main() {
         } else {
             res.status = 500;
             res.set_content("{\"error\":\"Failed to delete recipe\"}", "application/json");
-        }
-    });
+        } });
 
-    svr.Options("/api/recipes", [](const httplib::Request&, httplib::Response& res) {
+    svr.Options("/api/recipes", [](const httplib::Request &, httplib::Response &res)
+                {
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        res.set_header("Access-Control-Allow-Headers", "Content-Type");
-    });
+        res.set_header("Access-Control-Allow-Headers", "Content-Type"); });
 
-    svr.Options("/api/recipes/:id", [](const httplib::Request&, httplib::Response& res) {
+    svr.Options("/api/recipes/:id", [](const httplib::Request &, httplib::Response &res)
+                {
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        res.set_header("Access-Control-Allow-Headers", "Content-Type");
-    });
+        res.set_header("Access-Control-Allow-Headers", "Content-Type"); });
 
     std::cout << "Server starting on http://localhost:8080" << std::endl;
     std::cout << "API endpoints available at http://localhost:8080/api/recipes" << std::endl;
