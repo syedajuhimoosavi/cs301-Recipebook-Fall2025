@@ -32,16 +32,16 @@ A simple C++ web application for managing recipes with nutritional filtering, di
 1. **Clone the repository**
 
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/syedajuhimoosavi/cs301-Recipebook-Fall2025.git
    ```
 
 2. **Build the backend**
 
    ```bash
    cd backend
-   chmod +x ./recipe_server
    chmod +x ./run.sh
    make
+   chmod +x ./recipe_server
    ```
 
 3. **Initialize database with sample data**
