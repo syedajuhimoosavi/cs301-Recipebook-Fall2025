@@ -7,6 +7,8 @@
 body {
     font-family: 'Poppins', sans-serif;
     background-image: url('9109151.png');
+    background-size: cover;
+    background-position: center;
     background-color: #f5f5f5;
     color: #2b2b2b;
     line-height: 1.6;
