@@ -38,6 +38,7 @@ A simple C++ web application for managing recipes with nutritional filtering, di
 2. **Build the backend**
 
    ```bash
+   cd cs301-Recipebook-Fall2025
    cd backend
    chmod +x ./run.sh
    make
